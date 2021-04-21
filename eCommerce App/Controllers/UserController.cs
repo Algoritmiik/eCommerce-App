@@ -23,5 +23,10 @@ namespace eCommerce_App.Controllers
         {
             return View();
         }
+
+        public ActionResult ForgetPassword()
+        {
+            return View();
+        }
     }
 }

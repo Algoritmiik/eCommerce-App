@@ -260,6 +260,7 @@
     <Content Include="Template\contact.html" />
     <Content Include="Template\css\bootstrap.css" />
     <Content Include="Template\css\font-awesome.css" />
+    <Content Include="Template\css\page404.css" />
     <Content Include="Template\css\skdslider.css" />
     <Content Include="Template\css\style.css" />
     <Content Include="Template\faq.html" />
@@ -425,6 +426,8 @@
     <Content Include="Views\User\Checkout.cshtml" />
     <Content Include="Views\User\Login.cshtml" />
     <Content Include="Views\User\Registered.cshtml" />
+    <Content Include="Views\Home\Page404.cshtml" />
+    <Content Include="Views\User\ForgetPassword.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

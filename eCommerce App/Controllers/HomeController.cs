@@ -27,5 +27,10 @@ namespace eCommerce_App.Controllers
         {
             return View();
         }
+
+        public ActionResult Page404()
+        {
+            return View();
+        }
     }
 }
