@@ -20,9 +20,10 @@
         <h2>Login Form</h2>
 
         <div class="login-form-grids animated wow slideInUp" data-wow-delay=".5s">
-            <form>
-                <input type="email" placeholder="Email Address" required=" ">
-                <input type="password" placeholder="Password" required=" ">
+            <form action="/User/Login" method="post">
+                <p>@ViewBag.Invalid</p>
+                <input type="email" name="email" placeholder="Email Address" required=" ">
+                <input type="password" name="passwordHash" placeholder="Password" required=" ">
                 <div class="forgot">
                     <a href="/User/ForgetPassword">Forgot Password?</a>
                 </div>
