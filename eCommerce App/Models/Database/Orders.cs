@@ -17,8 +17,9 @@ namespace eCommerce_App.Models.Database
         public Discounts discount { get; set; }
         [Required]
         public DateTime ordered { get; set; }
-        public DateTime modified { get; set; }
-        [StringLength(100)]
+        public DateTime? modified { get; set; }
+        [Required]
+        [StringLength(30)]
         public string status { get; set; }
         [Required]
         public int amount { get; set; }

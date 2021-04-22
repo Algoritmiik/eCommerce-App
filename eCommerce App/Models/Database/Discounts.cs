@@ -21,7 +21,7 @@ namespace eCommerce_App.Models.Database
         public DateTime created { get; set; }
         [Required]
         public DateTime valid { get; set; }
-        public int quantity { get; set; }
+        public int? quantity { get; set; }
         public ICollection<Orders> orders { get; set; }
     }
 }

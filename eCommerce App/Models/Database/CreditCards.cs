@@ -13,8 +13,10 @@ namespace eCommerce_App.Models.Database
         public int creditCardId { get; set; }
         [Required]
         public Users userId { get; set; }
+        [Required]
         [StringLength(50)]
         public string creditCardName { get; set; }
+        [Required]
         [StringLength(100)]
         public string holderName { get; set; }
         [StringLength(16)]

@@ -14,8 +14,9 @@ namespace eCommerce_App.Models.Database
         public Users userId { get; set; }
         [Required]
         public Products productId{ get; set; }
+        [Required]
         [StringLength(200)]
         public string comment { get; set; }
-        public DateTime modified { get; set; }
+        public DateTime? modified { get; set; }
     }
 }

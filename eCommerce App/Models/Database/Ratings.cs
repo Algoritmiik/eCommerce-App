@@ -14,7 +14,8 @@ namespace eCommerce_App.Models.Database
         public Users userId { get; set; }
         [Required]
         public Products productId{ get; set; }
+        [Required]
         public int ratingValue { get; set; }
-        public DateTime modified { get; set; }
+        public DateTime? modified { get; set; }
     }
 }

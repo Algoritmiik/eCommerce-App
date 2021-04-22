@@ -12,7 +12,7 @@ namespace eCommerce_App.Models.Database
         public int productDetailId { get; set; }
         [Required]
         public Products productId { get; set; }
-        public int quantity { get; set; }
+        public int? quantity { get; set; }
         [StringLength(15)]
         public string size { get; set; }
         [StringLength(50)]

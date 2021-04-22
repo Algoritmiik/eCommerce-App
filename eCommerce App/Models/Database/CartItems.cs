@@ -14,8 +14,11 @@ namespace eCommerce_App.Models.Database
         public Users user { get; set; }
         [Required]
         public ProductDetails productDetail  { get; set; }
-        public bool savedForLater { get; set; }
+        [Required]
+        public bool bought { get; set; }
+        [Required]
         public int quantity { get; set; }
+        [Required]
         public DateTime timeAdded { get; set; }
     }
 }

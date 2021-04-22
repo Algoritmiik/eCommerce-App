@@ -13,6 +13,7 @@ namespace eCommerce_App.Models.Database
         public CreditCards creditCardId { get; set; }
         [StringLength(30)]
         public string paymentMethod { get; set; }
+        [Required]
         public bool allowed { get; set; }
         [Required]
         public Orders order { get; set; }

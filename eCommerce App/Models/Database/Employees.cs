@@ -19,6 +19,7 @@ namespace eCommerce_App.Models.Database
         [Required]
         [StringLength(50)]
         public string lastName { get; set; }
+        [Required]
         [StringLength(50)]
         [Index(IsUnique = true)]
         public string email { get; set; }
@@ -27,7 +28,7 @@ namespace eCommerce_App.Models.Database
         public string passwordHash { get; set; }
         [Required]
         public DateTime hireDate { get; set; }
-        public DateTime eliminateDate { get; set; }
+        public DateTime? eliminateDate { get; set; }
         [Required]
         public int Salary { get; set; }
         [Required]
