@@ -25,6 +25,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -220,6 +221,7 @@
     <Compile Include="Models\Database\Products.cs" />
     <Compile Include="Models\Database\Ratings.cs" />
     <Compile Include="Models\Database\Shops.cs" />
+    <Compile Include="Models\Database\SubCategories.cs" />
     <Compile Include="Models\Database\Tags.cs" />
     <Compile Include="Models\Database\UserAddresses.cs" />
     <Compile Include="Models\Database\Users.cs" />

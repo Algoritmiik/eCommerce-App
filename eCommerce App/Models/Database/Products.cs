@@ -11,12 +11,12 @@ namespace eCommerce_App.Models.Database
         [Key]
         public int productId { get; set; }
         [Required]
-        public Shops shop { get; set; }
+        public Shops shopId { get; set; }
         [Required]
         [StringLength(100)]
         public string productName { get; set; }
         [Required]
-        public Categories categoryId { get; set; }
+        public SubCategories subCategoryId { get; set; }
         [StringLength(100)]
         public string descriptions { get; set; }
         [Required]

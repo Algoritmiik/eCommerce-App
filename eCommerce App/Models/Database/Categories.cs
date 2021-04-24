@@ -13,6 +13,6 @@ namespace eCommerce_App.Models.Database
         [Required]
         [StringLength(100)]
         public string categoryName { get; set; }
-        public ICollection<Products> products { get; set; }
+        public ICollection<SubCategories> subCategories { get; set; }
     }
 }
