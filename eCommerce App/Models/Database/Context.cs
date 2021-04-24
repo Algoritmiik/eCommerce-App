@@ -22,6 +22,7 @@ namespace eCommerce_App.Models.Database
         public DbSet<ProductDetails> ProductDetails { get; set; }
         public DbSet<Ratings> Ratings { get; set; }
         public DbSet<Shops> Shops { get; set; }
+        public DbSet<SubCategories> SubCategories { get; set; }
         public DbSet<Tags> Tags { get; set; }
         public DbSet<Users> Users { get; set; }
         public DbSet<UserAddresses> UserAddresses { get; set; }
