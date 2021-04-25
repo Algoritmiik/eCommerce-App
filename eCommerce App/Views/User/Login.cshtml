@@ -21,7 +21,7 @@
 
         <div class="login-form-grids animated wow slideInUp" data-wow-delay=".5s">
             <form action="/User/Login" method="post">
-                <p>@ViewBag.Invalid</p>
+                <p style="color:red">@ViewBag.Invalid</p>
                 <input type="email" name="email" placeholder="Email Address" required=" ">
                 <input type="password" name="passwordHash" placeholder="Password" required=" ">
                 <div class="forgot">

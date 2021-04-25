@@ -20,6 +20,7 @@ namespace eCommerce_App.Models.Database
         public string lastName { get; set; }
         [StringLength(30)]
         [Required]
+        [Index(IsUnique = true)]
         public string phoneNumber { get; set; }
         [StringLength(50)]
         [Required]

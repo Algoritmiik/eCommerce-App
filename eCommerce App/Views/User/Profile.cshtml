@@ -1,0 +1,69 @@
+﻿
+@{
+    ViewBag.Title = "Profile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- breadcrumbs -->
+<div class="breadcrumbs">
+    <div class="container">
+        <ol class="breadcrumb breadcrumb1 animated wow slideInLeft" data-wow-delay=".5s">
+            <li><a href="/Home/Index"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>Home</a></li>
+            <li class="active">Register Page</li>
+        </ol>
+    </div>
+</div>
+<!-- //breadcrumbs -->
+<!-- profile -->
+<div class="products">
+    <div class="container">
+        <div class="col-md-4 products-left">
+            <div class="categories">
+                <h2>Profile</h2>
+                <ul class="cate">
+                    <li><a href="/User/Profile"><i class="fa fa-arrow-right" aria-hidden="true"></i>My Account</a></li>
+                    <ul>
+                        <li><a href="/User/Profile"><i class="fa fa-arrow-right" aria-hidden="true"></i>My Credit Cards</a></li>
+                        <li><a href="/User/Profile"><i class="fa fa-arrow-right" aria-hidden="true"></i>My Addresses</a></li>
+                        <li><a href="/User/Profile"><i class="fa fa-arrow-right" aria-hidden="true"></i>Updating Account Information</a></li>
+                        <li><a href="/User/Profile"><i class="fa fa-arrow-right" aria-hidden="true"></i>Reseting Password</a></li>
+                    </ul>
+                    <li><a href="~/Views/User/Profile"><i class="fa fa-arrow-right" aria-hidden="true"></i>My Orders</a></li>
+                    <ul>
+                        <li><a href="/User/Profile"><i class="fa fa-arrow-right" aria-hidden="true"></i>Current Orders</a> </li>
+                        <li><a href="/User/Profile"><i class="fa fa-arrow-right" aria-hidden="true"></i>Past Orders</a> </li>
+                    </ul>
+                    <li><a href="/User/Profile"><i class="fa fa-arrow-right" aria-hidden="true"></i>My Ratings and Comments</a></li>
+                    <ul>
+                        <li><a href="/User/Profile"><i class="fa fa-arrow-right" aria-hidden="true"></i>Ratings</a> </li>
+                        <li><a href="/User/Profile"><i class="fa fa-arrow-right" aria-hidden="true"></i>Comments</a> </li>
+                    </ul>
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-md-8 top_brand_left">
+            <div class="hover14 column">
+                <div class="agile_top_brand_left_grid">
+                    <div class="agile_top_brand_left_grid1">
+                        <figure>
+                            <h2 style="padding-left:38%">My Account</h2><br>
+                            <label style="font-weight: bold; padding-left: 5%;" for="firstName">First Name:</label>
+                            <input style="float:right; padding-right: 5%;" size="50" type="text" name="firstName" placeholder="First Name..." value=""><br><br>
+                            <label style="font-weight: bold; padding-left: 5%" for="lastName">Last name:</label>
+                            <input style="float:right; padding-right: 5%;" size="50" type="text" name="lastName" placeholder="Last Name..." value=""><br><br>
+
+                            <label style="font-weight: bold; padding-left: 5%;" for="phoneNumber">Phone Number:</label>
+                            <input style="float:right; padding-right: 5%;" size="50" type="text" name="phoneNumber" placeholder="Phone Number..." value=""><br><br>
+                            <label style="font-weight: bold; padding-left: 5%" for="email">E-Mail:</label>
+                            <input style="float:right; padding-right: 5%;" size="50" type="email" name="email" placeholder="E-Mail..." value=""><br><br>
+                        </figure>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+<!-- //profile -->

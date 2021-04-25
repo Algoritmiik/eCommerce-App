@@ -6,12 +6,13 @@ using System.Web;
 using System.Web.Mvc;
 using eCommerce_App.Models.Database;
 using System.Security.Cryptography;
+using System.Text.RegularExpressions;
+using System.Globalization;
 
 namespace eCommerce_App.Controllers
 {
     public class UserController : Controller
     {
-
         Context c = new Context();
         SHA256CryptoServiceProvider sha256 = new SHA256CryptoServiceProvider();
 
@@ -35,7 +36,7 @@ namespace eCommerce_App.Controllers
             }
             else
             {
-                ViewBag.Invalid = "Email or password is wrong";
+                ViewBag.Invalid = "*Email or password is wrong";
                 return View(user);
             }
         }
@@ -49,11 +50,40 @@ namespace eCommerce_App.Controllers
         [HttpPost]
         public ActionResult Registered(Users user)
         {
-            user.passwordHash = SHA256Hashing(user.passwordHash);
-            user.registeredAt = DateTime.Now;
-            c.Users.Add(user);
-            c.SaveChanges();
-            return RedirectToAction("Login");
+            try
+            {
+                if (c.Users.FirstOrDefault(x => x.email == user.email) == null)
+                {
+                    if (c.Users.FirstOrDefault(x => x.phoneNumber == user.phoneNumber) == null)
+                    {
+                        user.passwordHash = SHA256Hashing(user.passwordHash);
+                        user.registeredAt = DateTime.Now;
+                        c.Users.Add(user);
+                        c.SaveChanges();
+                        return RedirectToAction("Login");
+                    }
+                    else
+                    {
+                        ViewBag.InvalidPhone = "*Phone number already exists";
+                        return View(user);
+                    }
+                }
+                else
+                {
+                    ViewBag.InvalidEmail = "*Email already exists";
+                    return View(user);
+                }
+            }
+            catch (Exception)
+            {
+
+                return View(user);
+            }
+                
+        }
+        public ActionResult Profile()
+        {
+            return View();
         }
 
         public ActionResult Checkout()
