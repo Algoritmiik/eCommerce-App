@@ -261,6 +261,7 @@
     <Content Include="Template\checkout.html" />
     <Content Include="Template\contact.html" />
     <Content Include="Template\css\bootstrap.css" />
+    <Content Include="Template\css\deneme.css" />
     <Content Include="Template\css\font-awesome.css" />
     <Content Include="Template\css\page404.css" />
     <Content Include="Template\css\skdslider.css" />
