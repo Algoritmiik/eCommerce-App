@@ -15,6 +15,7 @@ namespace eCommerce_App.Controllers
     {
         Context c = new Context();
         SHA256CryptoServiceProvider sha256 = new SHA256CryptoServiceProvider();
+        HttpCookie cookieLogin = new HttpCookie("cookieLogin");
 
         [HttpGet]
         public ActionResult Login()
@@ -32,6 +33,10 @@ namespace eCommerce_App.Controllers
                 currentUser.lastLogin = DateTime.Now;
                 c.Entry(currentUser).CurrentValues.SetValues(currentUser);
                 c.SaveChanges();
+                cookieLogin["firstName"] = currentUser.firstName;
+                cookieLogin["lastName"] = currentUser.lastName;
+                cookieLogin["email"] = currentUser.email;
+                Response.Cookies.Add(cookieLogin);
                 return RedirectToAction("Index", "Home");
             }
             else
@@ -50,40 +55,27 @@ namespace eCommerce_App.Controllers
         [HttpPost]
         public ActionResult Registered(Users user)
         {
-            try
+            if (c.Users.FirstOrDefault(x => x.email == user.email) == null)
             {
-                if (c.Users.FirstOrDefault(x => x.email == user.email) == null)
+                if (c.Users.FirstOrDefault(x => x.phoneNumber == user.phoneNumber) == null)
                 {
-                    if (c.Users.FirstOrDefault(x => x.phoneNumber == user.phoneNumber) == null)
-                    {
-                        user.passwordHash = SHA256Hashing(user.passwordHash);
-                        user.registeredAt = DateTime.Now;
-                        c.Users.Add(user);
-                        c.SaveChanges();
-                        return RedirectToAction("Login");
-                    }
-                    else
-                    {
-                        ViewBag.InvalidPhone = "*Phone number already exists";
-                        return View(user);
-                    }
+                    user.passwordHash = SHA256Hashing(user.passwordHash);
+                    user.registeredAt = DateTime.Now;
+                    c.Users.Add(user);
+                    c.SaveChanges();
+                    return RedirectToAction("Login");
                 }
                 else
                 {
-                    ViewBag.InvalidEmail = "*Email already exists";
+                    ViewBag.InvalidPhone = "*Phone number already exists";
                     return View(user);
                 }
             }
-            catch (Exception)
+            else
             {
-
+                ViewBag.InvalidEmail = "*Email already exists";
                 return View(user);
-            }
-                
-        }
-        public ActionResult Profile()
-        {
-            return View();
+            }    
         }
 
         public ActionResult Checkout()
