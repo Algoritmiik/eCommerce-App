@@ -8,6 +8,7 @@ using eCommerce_App.Models.Database;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 using System.Globalization;
+using System.Web.Security;
 
 namespace eCommerce_App.Controllers
 {
@@ -27,24 +28,33 @@ namespace eCommerce_App.Controllers
         [HttpPost]
         public ActionResult Login(Users user)
         {
-            string password = SHA256Hashing(user.passwordHash);
-            if (c.Users.FirstOrDefault(x => x.email == user.email && x.passwordHash == password) != null)
-            {
-                var currentUser = c.Users.Where(x => x.email == user.email).First();
-                currentUser.lastLogin = DateTime.Now;
-                c.Entry(currentUser).CurrentValues.SetValues(currentUser);
-                c.SaveChanges();
-                cookieLogin["firstName"] = currentUser.firstName;
-                cookieLogin["lastName"] = currentUser.lastName;
-                cookieLogin["email"] = currentUser.email;
-                Response.Cookies.Add(cookieLogin);
-                return RedirectToAction("Index", "Home");
-            }
-            else
-            {
-                ViewBag.Invalid = "*Email or password is wrong";
-                return View(user);
-            }
+            //string password = SHA256Hashing(user.passwordHash);
+            //if (c.Users.FirstOrDefault(x => x.email == user.email && x.passwordHash == password) != null)
+            //{
+            //    var currentUser = c.Users.Where(x => x.email == user.email).First();
+            //    currentUser.lastLogin = DateTime.Now;
+            //    c.Entry(currentUser).CurrentValues.SetValues(currentUser);
+            //    c.SaveChanges();
+            //if (ModelState.IsValid)
+            //{
+                //bool IsValidUser = c.Users
+                //    .Any(u => u.email.ToLower() == user.email.ToLower() && u.passwordHash == user.passwordHash);
+
+                FormsAuthentication.SetAuthCookie(user.firstName, false);
+            System.Diagnostics.Debug.WriteLine("asd" + HttpContext.User.Identity.Name);
+                return RedirectToAction("Registered");
+            //}
+                //cookieLogin["firstName"] = currentUser.firstName;
+                //cookieLogin["lastName"] = currentUser.lastName;
+                //cookieLogin["email"] = currentUser.email;
+                //Response.Cookies.Add(cookieLogin);
+                //return RedirectToAction("Index", "Home");
+            
+            //else
+            //{
+            //    ViewBag.Invalid = "*Email or password is wrong";
+            //    return View(user);
+            //}
         }
 
         [HttpGet]
