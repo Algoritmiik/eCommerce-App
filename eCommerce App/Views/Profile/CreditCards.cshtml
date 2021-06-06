@@ -1,0 +1,188 @@
+﻿@using eCommerce_App.Models.Database;
+@model List<CreditCards>
+@{ <!--EKLENECEKLER: Otomatik olarak giriş yapan kullanıcının id'sinin url'ine redirect edecek-->
+    ViewBag.Title = "Profile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var creditCardName = "";
+    var holderName = "";
+    var expireDate = "";
+    var cardNumber = "";
+    var CVV = "";
+    var creditCardId = "";
+    var userId_userId = "";
+
+    if (!IsPost)
+    {
+        if (!Request.QueryString["userId"].IsEmpty() && Request.QueryString["userId"].IsInt()) //?userId=10
+        {
+            userId_userId = Request.QueryString["userId"];
+            var db = Database.Open("Context"); <!--Nuget package olarak Microsoft.AspNet.WebPages.WebData eklenmeli-->
+            var dbCommand = "SELECT * FROM CreditCards WHERE userId_userId = @0";
+            var row = db.QuerySingle(dbCommand, userId_userId);
+
+            if (row != null)
+            {
+                creditCardName = row.creditCardName;
+                holderName = row.holderName;
+                expireDate = row.expireDate;
+                cardNumber = row.cardNumber;
+                CVV = row.CVV;
+                creditCardId = row.creditCardId;
+                userId_userId = row.userId_userId;
+            }
+        }
+    }
+
+    if (IsPost)
+    {
+        if (!Request.QueryString["userId"].IsEmpty() && Request.QueryString["userId"].IsInt())
+        {
+            creditCardName = Request.Form["creditCardName"];
+            holderName = Request.Form["creditCardName"];
+            expireDate = Request.Form["creditCardName"];
+            cardNumber = Request.Form["creditCardName"];
+            CVV = Request.Form["creditCardName"];
+            creditCardId = Request.Form["creditCardName"];
+            userId_userId = Request.Form["userId_userId"];
+
+
+            var db = Database.Open("Context");
+            var updateCommand = "INSERT INTO CreditCards (creditCardName, holderName, expireDate, cardNumber, CVV, creditCardId, userId_userId) VALUES (@0, @1, @2, @3, @4, @5, @6)";
+            db.Execute(updateCommand, creditCardName, holderName, expireDate, cardNumber, CVV, creditCardId, userId_userId);
+            Response.Redirect("/Profile/CreditCards");
+        }
+    }
+}
+<style>
+    .button {
+        background-color: #4CAF50; /* Green */
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+    }
+
+    .button1 {
+        border-radius: 12px;
+    }
+</style>
+
+<!-- breadcrumbs -->
+<div class="breadcrumbs">
+    <div class="container">
+        <ol class="breadcrumb breadcrumb1 animated wow slideInLeft" data-wow-delay=".5s">
+            <li><a href="/Home/Index"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>Home</a></li>
+            <li class="active">Register Page</li>
+        </ol>
+    </div>
+</div>
+<!-- //breadcrumbs -->
+<!-- profile -->
+<div class="products">
+    <div class="container">
+        <div class="col-md-4 products-left">
+            <div class="categories">
+                <h2>Profile</h2>
+                <ul class="cate">
+                    <li><a href="/Profile/MyAccount"><i class="fa fa-arrow-right" aria-hidden="true"></i>My Account</a></li>
+                    <ul>
+                        <li><a href="/Profile/CreditCards"><i class="fa fa-arrow-right" aria-hidden="true"></i>My Credit Cards</a></li>
+                        <li><a href="/Profile/Addresses"><i class="fa fa-arrow-right" aria-hidden="true"></i>My Addresses</a></li>
+                        <li><a href="/Profile/UpdateInfo"><i class="fa fa-arrow-right" aria-hidden="true"></i>Updating Account Information</a></li>
+                        <li><a href="/Profile/ResetPassword"><i class="fa fa-arrow-right" aria-hidden="true"></i>Reseting Password</a></li>
+                    </ul>
+                    <li><a href="/Profile/Orders"><i class="fa fa-arrow-right" aria-hidden="true"></i>My Orders</a></li>
+                    <ul>
+                        <li><a href="/Profile/CurrentOrders"><i class="fa fa-arrow-right" aria-hidden="true"></i>Current Orders</a> </li>
+                        <li><a href="/Profile/PastOrders"><i class="fa fa-arrow-right" aria-hidden="true"></i>Past Orders</a> </li>
+                    </ul>
+                    <li><a href="/Profile/RatingsComments"><i class="fa fa-arrow-right" aria-hidden="true"></i>My Ratings and Comments</a></li>
+                    <ul>
+                        <li><a href="/Profile/Ratings"><i class="fa fa-arrow-right" aria-hidden="true"></i>Ratings</a> </li>
+                        <li><a href="/Profile/Comments"><i class="fa fa-arrow-right" aria-hidden="true"></i>Comments</a> </li>
+                    </ul>
+                </ul>
+            </div>
+        </div>
+        @*<div>
+                <table>
+                    <tbody>
+                        @foreach (var x in Model)
+                        {
+                            @if (userId_userId == x.userId.ToString())
+                            {
+                                <p></p>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>*@
+        <div class="col-md-8 top_brand_left">
+            <div class="hover14 column">
+                <div class="agile_top_brand_left_grid">
+                    <div class="agile_top_brand_left_grid1">
+                        <form method="post">
+                            <fieldset>
+                                <button id="btnShowModal" type="button" class="btn btn-warning btn-block btn-lg button button1">Add New Card</button>
+                                <div class="modal fade" tabindex="-1" id="loginModal" data-keyboard="false" data-backdrop="static">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal">
+                                                    ×
+                                                </button>
+                                                <h4 class="modal-title">Add New Credit Card</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form method="post">
+                                                    <div class="form-group">
+                                                        <input class="form-control" type="text" placeholder="Card Name" id="cardName" value="@creditCardName" />
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <input class="form-control" type="text" placeholder="Card Holders Name" id="cardHolder" value="@holderName" />
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <input class="form-control" type="number" placeholder="Credit Card Number" id="cardNumber" value="@cardNumber" />
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <input class="form-control" type="datetime" placeholder="Expire Date" id="expireDate" value="@expireDate" />
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <input class="form-control" type="number" placeholder="CVV" id="CVV" value="@CVV" />
+                                                        <input type="hidden" name="userId" value="@userId_userId" />
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="submit" class="btn btn-warning btn-block btn-lg button1" ">Add</button>
+                                                        <button type="button" id="btnHideModal" class="btn btn-warning btn-block btn-lg button1">Hide</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#btnShowModal").click(function () {
+            $("#loginModal").modal('show');
+        });
+
+        $("#btnHideModal").click(function () {
+            $("#loginModal").modal('hide');
+        });
+    });
+</script>

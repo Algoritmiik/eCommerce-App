@@ -1,0 +1,117 @@
+﻿@{ <!--EKLENECEKLER: Otomatik olarak giriş yapan kullanıcının id'sinin url'ine redirect edecek-->
+    ViewBag.Title = "Profile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var firstName = "";
+    var lastName = "";
+    var email = "";
+    var phoneNumber = "";
+    var userId = "";
+
+    if (!IsPost)
+    {
+        if (!Request.QueryString["userId"].IsEmpty() && Request.QueryString["userId"].IsInt()) //?userId=10
+        {
+            userId = Request.QueryString["userId"];
+            var db = Database.Open("Context"); <!--Nuget package olarak Microsoft.AspNet.WebPages.WebData eklenmeli-->
+            var dbCommand = "SELECT * FROM Users WHERE userId = @0";
+            var row = db.QuerySingle(dbCommand, userId);
+
+            if (row != null)
+            {
+                firstName = row.firstName;
+                lastName = row.lastName;
+                email = row.email;
+                phoneNumber = row.phoneNumber;
+            }
+        }
+    }
+
+    if (IsPost)
+    {
+        if (!Request.QueryString["userId"].IsEmpty() && Request.QueryString["userId"].IsInt())
+        {
+            firstName = Request.Form["firstName"];
+            lastName = Request.Form["lastName"];
+            email = Request.Form["email"];
+            phoneNumber = Request.Form["phoneNumber"];
+            userId = Request.Form["userId"];
+
+
+            var db = Database.Open("Context");
+            var updateCommand = "UPDATE Users SET firstName = @0, lastName = @1, email = @2, phoneNumber = @3 WHERE userId = @4";
+            db.Execute(updateCommand, firstName, lastName, email, phoneNumber, userId);
+            Response.Redirect("/Profile/Profile");
+        }
+    }
+}
+
+<!-- breadcrumbs -->
+<div class="breadcrumbs">
+    <div class="container">
+        <ol class="breadcrumb breadcrumb1 animated wow slideInLeft" data-wow-delay=".5s">
+            <li><a href="/Home/Index"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>Home</a></li>
+            <li class="active">Register Page</li>
+        </ol>
+    </div>
+</div>
+<!-- //breadcrumbs -->
+<!-- profile -->
+<div class="products">
+    <div class="container">
+        <div class="col-md-4 products-left">
+            <div class="categories">
+                <h2>Profile</h2>
+                <ul class="cate">
+                    <li><a href="/Profile/MyAccount"><i class="fa fa-arrow-right" aria-hidden="true"></i>My Account</a></li>
+                    <ul>
+                        <li><a href="/Profile/CreditCards"><i class="fa fa-arrow-right" aria-hidden="true"></i>My Credit Cards</a></li>
+                        <li><a href="/Profile/Addresses"><i class="fa fa-arrow-right" aria-hidden="true"></i>My Addresses</a></li>
+                        <li><a href="/Profile/UpdateInfo"><i class="fa fa-arrow-right" aria-hidden="true"></i>Updating Account Information</a></li>
+                        <li><a href="/Profile/ResetPassword"><i class="fa fa-arrow-right" aria-hidden="true"></i>Reseting Password</a></li>
+                    </ul>
+                    <li><a href="/Profile/Orders"><i class="fa fa-arrow-right" aria-hidden="true"></i>My Orders</a></li>
+                    <ul>
+                        <li><a href="/Profile/CurrentOrders"><i class="fa fa-arrow-right" aria-hidden="true"></i>Current Orders</a> </li>
+                        <li><a href="/Profile/PastOrders"><i class="fa fa-arrow-right" aria-hidden="true"></i>Past Orders</a> </li>
+                    </ul>
+                    <li><a href="/Profile/RatingsComments"><i class="fa fa-arrow-right" aria-hidden="true"></i>My Ratings and Comments</a></li>
+                    <ul>
+                        <li><a href="/Profile/Ratings"><i class="fa fa-arrow-right" aria-hidden="true"></i>Ratings</a> </li>
+                        <li><a href="/Profile/Comments"><i class="fa fa-arrow-right" aria-hidden="true"></i>Comments</a> </li>
+                    </ul>
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-md-8 top_brand_left">
+            <div class="hover14 column">
+                <div class="agile_top_brand_left_grid">
+                    <div class="agile_top_brand_left_grid1">
+                        <form method="post">
+                            <fieldset>
+                                <h2 style="padding-left:30%">Update Information</h2><br>
+                                <div class="row mt-2">
+                                    <div class="col-md-6"><label class="labels">First Name</label><input name="firstName" type="text" class="form-control" value="@firstName" placeholder="First Name" ></div>
+                                    <div class="col-md-6"><label class="labels">Last Name</label><input name="lastName" type="text" class="form-control" value="@lastName" placeholder="Last Name"></div>
+                                </div>
+                                <br>
+                                <div class="row mt-3">
+                                    <div class="col-md-12"><label class="labels">Phone Number</label><input name="phoneNumber" type="tel" class="form-control" placeholder="Phone Number" value="@phoneNumber"></div>
+                                </div>
+                                <br>
+                                <div class="row mt-3">
+                                    <div class="col-md-12"><label class="labels">Email Address</label><input name="email" type="email" class="form-control" placeholder="Email Address" value="@email"></div>
+                                    <input type="hidden" name="userId" value="@userId" />
+                                </div>
+                                <br>
+                                <p><input type="submit" name="buttonSubmit" value="Submit Changes" /></p>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- //profile -->

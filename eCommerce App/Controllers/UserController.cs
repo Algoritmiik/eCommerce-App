@@ -16,6 +16,7 @@ namespace eCommerce_App.Controllers
         Context c = new Context();
         SHA256CryptoServiceProvider sha256 = new SHA256CryptoServiceProvider();
         HttpCookie cookieLogin = new HttpCookie("cookieLogin");
+        
 
         [HttpGet]
         public ActionResult Login()
