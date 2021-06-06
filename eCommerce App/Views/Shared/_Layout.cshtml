@@ -4,15 +4,9 @@ author URL: http://w3layouts.com
 License: Creative Commons Attribution 3.0 Unported
 License URL: http://creativecommons.org/licenses/by/3.0/
 -->
-@using System.Collections.Specialized;
 @{
-    NameValueCollection val = null;
-    if (HttpContext.Current.Request.Cookies["cookieLogin"] != null)
-    {
-        val = HttpContext.Current.Request.Cookies["cookieLogin"].Values;
-    }
+    bool val = HttpContext.Current.User.Identity.IsAuthenticated;
 }
-<!DOCTYPE html>
 <html>
 <head>
     <title>@ViewBag.Title</title>
@@ -57,24 +51,24 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 <p>SALE UP TO 70% OFF. USE CODE "SALE70%" . <a href="/Product/Products">SHOP NOW</a></p>
             </div>
             <div class="agile-login">
-                 @if (val == null)
-                 {
+                @if (!User.Identity.IsAuthenticated)
+                {
                     <ul>
                         <li><a href="/User/Registered"> Register </a></li>
                         <li><a href="/User/Login">Login</a></li>
                         <li><a href="/Home/Contact">Help</a></li>
 
                     </ul>
-                 }
-                 else
-                 {
-                    <ul>
-                        <li><a href="/Profile/Profile"> @val[0] </a></li>
-                        <li><a href="#">Log Out</a></li>
-                        <li><a href="/Home/Contact">Help</a></li>
+                }
+                else
+                {
+                <ul>
+                    <li><a href="/Profile/Profile"> @User.Identity.Name </a></li>
+                    <li><a href="/User/SignOut">Log Out</a></li>
+                    <li><a href="/Home/Contact">Help</a></li>
 
-                    </ul>
-                 }
+                </ul>
+                }
             </div>
             <div class="product_list_header">
                 <form action="#" method="post" class="last">

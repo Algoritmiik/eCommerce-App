@@ -12,6 +12,10 @@ namespace eCommerce_App.Models.Database
     {
         [Key]
         public int userId { get; set; }
+        [StringLength(15)]
+        [Required]
+        [Index(IsUnique = true)]
+        public string userName { get; set; }
         [StringLength(50)]
         [Required]
         public string firstName { get; set; }
