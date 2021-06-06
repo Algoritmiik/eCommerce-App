@@ -1,0 +1,176 @@
+﻿
+@{<!--EKLENECEKLER: Otomatik olarak giriş yapan kullanıcının id'sinin url'ine redirect edecek-->
+    ViewBag.Title = "Profile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var addressName = "";
+    var address1 = "";
+    var address2 = "";
+    var postCode = "";
+    var city = "";
+    var phone = "";
+    var userId = "";
+
+    if (!IsPost)
+    {
+        if (!Request.QueryString["userId"].IsEmpty() && Request.QueryString["userId"].IsInt()) //?userId=10
+        {
+            userId = Request.QueryString["userId"];
+            var db = Database.Open("Context"); <!--Nuget package olarak Microsoft.AspNet.WebPages.WebData eklenmeli-->
+            var dbCommand = "SELECT * FROM UserAddresses WHERE user_userId = @0";
+            var row = db.QuerySingle(dbCommand, userId);
+
+            if (row != null)
+            {
+                addressName = row.addressName;
+                address1 = row.address1;
+                address2 = row.address2;
+                postCode = row.postCode;
+                city = row.city;
+                phone = row.phone;
+            }
+        }
+    }
+
+    if (IsPost)
+    {
+        if (!Request.QueryString["userId"].IsEmpty() && Request.QueryString["userId"].IsInt())
+        {
+            addressName = Request.Form["addressName"];
+            address1 = Request.Form["address1"];
+            address2 = Request.Form["address2"];
+            postCode = Request.Form["postCode"];
+            city = Request.Form["city"];
+            phone = Request.Form["phone"];
+            userId = Request.Form["userId"];
+    
+    
+            var db = Database.Open("Context");
+            var setCommand = "INSERT INTO UserAddresses (addressName, address1, address2, postCode, city, phone, user_userId) VALUES (@0, @1, @2, @3, @4, @5, @6)";
+            db.Execute(setCommand, addressName, address1, address2, postCode, city, phone, userId);
+            Response.Redirect("/Profile/Addresses");
+        }
+    }
+}
+
+<style>
+    .button {
+        background-color: #4CAF50; /* Green */
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+    }
+
+    .button1 {
+        border-radius: 12px;
+    }
+</style>
+
+<!-- breadcrumbs -->
+<div class="breadcrumbs">
+    <div class="container">
+        <ol class="breadcrumb breadcrumb1 animated wow slideInLeft" data-wow-delay=".5s">
+            <li><a href="/Home/Index"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>Home</a></li>
+            <li class="active">Register Page</li>
+        </ol>
+    </div>
+</div>
+<!-- //breadcrumbs -->
+<!-- profile -->
+<div class="products">
+    <div class="container">
+        <div class="col-md-4 products-left">
+            <div class="categories">
+                <h2>Profile</h2>
+                <ul class="cate">
+                    <li><a href="/Profile/MyAccount"><i class="fa fa-arrow-right" aria-hidden="true"></i>My Account</a></li>
+                    <ul>
+                        <li><a href="/Profile/CreditCards"><i class="fa fa-arrow-right" aria-hidden="true"></i>My Credit Cards</a></li>
+                        <li><a href="/Profile/Addresses"><i class="fa fa-arrow-right" aria-hidden="true"></i>My Addresses</a></li>
+                        <li><a href="/Profile/UpdateInfo"><i class="fa fa-arrow-right" aria-hidden="true"></i>Updating Account Information</a></li>
+                        <li><a href="/Profile/ResetPassword"><i class="fa fa-arrow-right" aria-hidden="true"></i>Reseting Password</a></li>
+                    </ul>
+                    <li><a href="/Profile/Orders"><i class="fa fa-arrow-right" aria-hidden="true"></i>My Orders</a></li>
+                    <ul>
+                        <li><a href="/Profile/CurrentOrders"><i class="fa fa-arrow-right" aria-hidden="true"></i>Current Orders</a> </li>
+                        <li><a href="/Profile/PastOrders"><i class="fa fa-arrow-right" aria-hidden="true"></i>Past Orders</a> </li>
+                    </ul>
+                    <li><a href="/Profile/RatingsComments"><i class="fa fa-arrow-right" aria-hidden="true"></i>My Ratings and Comments</a></li>
+                    <ul>
+                        <li><a href="/Profile/Ratings"><i class="fa fa-arrow-right" aria-hidden="true"></i>Ratings</a> </li>
+                        <li><a href="/Profile/Comments"><i class="fa fa-arrow-right" aria-hidden="true"></i>Comments</a> </li>
+                    </ul>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-8 top_brand_left">
+            <div class="hover14 column">
+                <div class="agile_top_brand_left_grid">
+                    <div class="agile_top_brand_left_grid1">
+
+                        <button id="btnShowModal" type="button" class="btn btn-warning btn-block btn-lg button button1">Add New Address</button>
+                        <div class="modal fade" tabindex="-1" id="loginModal" data-keyboard="false" data-backdrop="static">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">
+                                            ×
+                                        </button>
+                                        <h4 class="modal-title">Add New Credit Card</h4>
+                                    </div>
+                                    <form method="post">
+                                        <fieldset>
+                                            <div class="modal-body">
+                                                <div class="form-group">
+                                                    <input class="form-control" type="text" placeholder="Address Name" id="addressName" value="@addressName" />
+                                                </div>
+                                                <div class="form-group">
+                                                    <input class="form-control" type="text" placeholder="Address Line 1" id="address1" value="@address1" />
+                                                </div>
+                                                <div class="form-group">
+                                                    <input class="form-control" type="text" placeholder="Address Line 2" id="address2" value="@address2" />
+                                                </div>
+                                                <div class="form-group">
+                                                    <input class="form-control" type="number" placeholder="Post Code" id="postCode" value="@postCode" />
+                                                </div>
+                                                <div class="form-group">
+                                                    <input class="form-control" type="text" placeholder="City" id="city" value="@city" />
+                                                </div>
+                                                <div class="form-group">
+                                                    <input class="form-control" type="tel" placeholder="Phone Number" id="phone" value="@phone" />
+                                                    <input type="hidden" name="userId" value="@userId" />
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="submit" class="btn btn-warning btn-block btn-lg button1" ">Add</button>
+                                                    <button type="button" id="btnHideModal" class="btn btn-warning btn-block btn-lg button1">Hide</button>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#btnShowModal").click(function () {
+            $("#loginModal").modal('show');
+        });
+
+        $("#btnHideModal").click(function () {
+            $("#loginModal").modal('hide');
+        });
+    });
+</script>

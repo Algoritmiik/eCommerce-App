@@ -139,6 +139,12 @@
       <Private>True</Private>
       <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
+    <Reference Include="WebMatrix.Data, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.Data.3.2.7\lib\net45\WebMatrix.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="WebMatrix.WebData, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.WebData.3.2.7\lib\net45\WebMatrix.WebData.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json">
@@ -432,7 +438,18 @@
     <Content Include="Views\User\Registered.cshtml" />
     <Content Include="Views\Home\Page404.cshtml" />
     <Content Include="Views\User\ForgetPassword.cshtml" />
+    <Content Include="Views\Profile\UpdateInfo.cshtml" />
     <Content Include="Views\Profile\Profile.cshtml" />
+    <Content Include="Views\Profile\CreditCards.cshtml" />
+    <Content Include="Views\Profile\Addresses.cshtml" />
+    <Content Include="Views\Profile\ResetPassword.cshtml" />
+    <Content Include="Views\Profile\Orders.cshtml" />
+    <Content Include="Views\Profile\CurrentOrders.cshtml" />
+    <Content Include="Views\Profile\PastOrders.cshtml" />
+    <Content Include="Views\Profile\RatingsComments.cshtml" />
+    <Content Include="Views\Profile\Ratings.cshtml" />
+    <Content Include="Views\Profile\Comments.cshtml" />
+    <Content Include="Views\Profile\MyAccount.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
