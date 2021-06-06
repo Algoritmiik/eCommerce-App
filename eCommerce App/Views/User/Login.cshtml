@@ -8,7 +8,7 @@
 <div class="breadcrumbs">
     <div class="container">
         <ol class="breadcrumb breadcrumb1 animated wow slideInLeft" data-wow-delay=".5s">
-            <li><a href="index.html"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>Home</a></li>
+            <li><a href="/Home/Index"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>Home</a></li>
             <li class="active">Login Page</li>
         </ol>
     </div>
@@ -22,8 +22,9 @@
         <div class="login-form-grids animated wow slideInUp" data-wow-delay=".5s">
             <form action="/User/Login" method="post">
                 <p style="color:red">@ViewBag.Invalid</p>
-                <input type="email" name="email" placeholder="Email Address" required=" ">
+                <input type="text" name="email" placeholder="Email Address or Username" required=" ">
                 <input type="password" name="passwordHash" placeholder="Password" required=" ">
+                @*<input type="checkbox" name="rememberMe" placeholder="Remember Me">*@
                 <div class="forgot">
                     <a href="/User/ForgetPassword">Forgot Password?</a>
                 </div>

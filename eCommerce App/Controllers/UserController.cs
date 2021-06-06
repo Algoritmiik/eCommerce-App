@@ -16,8 +16,6 @@ namespace eCommerce_App.Controllers
     {
         Context c = new Context();
         SHA256CryptoServiceProvider sha256 = new SHA256CryptoServiceProvider();
-        HttpCookie cookieLogin = new HttpCookie("cookieLogin");
-        
 
         [HttpGet]
         public ActionResult Login()
@@ -28,33 +26,31 @@ namespace eCommerce_App.Controllers
         [HttpPost]
         public ActionResult Login(Users user)
         {
-            //string password = SHA256Hashing(user.passwordHash);
-            //if (c.Users.FirstOrDefault(x => x.email == user.email && x.passwordHash == password) != null)
-            //{
-            //    var currentUser = c.Users.Where(x => x.email == user.email).First();
-            //    currentUser.lastLogin = DateTime.Now;
-            //    c.Entry(currentUser).CurrentValues.SetValues(currentUser);
-            //    c.SaveChanges();
-            //if (ModelState.IsValid)
-            //{
-                //bool IsValidUser = c.Users
-                //    .Any(u => u.email.ToLower() == user.email.ToLower() && u.passwordHash == user.passwordHash);
-
-                FormsAuthentication.SetAuthCookie(user.firstName, false);
-            System.Diagnostics.Debug.WriteLine("asd" + HttpContext.User.Identity.Name);
-                return RedirectToAction("Registered");
-            //}
-                //cookieLogin["firstName"] = currentUser.firstName;
-                //cookieLogin["lastName"] = currentUser.lastName;
-                //cookieLogin["email"] = currentUser.email;
-                //Response.Cookies.Add(cookieLogin);
-                //return RedirectToAction("Index", "Home");
-            
-            //else
-            //{
-            //    ViewBag.Invalid = "*Email or password is wrong";
-            //    return View(user);
-            //}
+            string password = SHA256Hashing(user.passwordHash);
+            if (c.Users.FirstOrDefault(x => x.email == user.email && x.passwordHash == password) != null)
+            {
+                var currentUser = c.Users.Where(x => x.email == user.email).First();
+                currentUser.lastLogin = DateTime.Now;
+                string userName = currentUser.userName;
+                c.Entry(currentUser).CurrentValues.SetValues(currentUser);
+                c.SaveChanges();
+                FormsAuthentication.SetAuthCookie(userName, false);
+                return RedirectToAction("Index", "Home");
+            }
+            else if(c.Users.FirstOrDefault(x => x.userName == user.email && x.passwordHash == password) != null)
+            {
+                var currentUser = c.Users.Where(x => x.userName == user.email).First();
+                currentUser.lastLogin = DateTime.Now;
+                c.Entry(currentUser).CurrentValues.SetValues(currentUser);
+                c.SaveChanges();
+                FormsAuthentication.SetAuthCookie(currentUser.userName, false);
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                ViewBag.Invalid = "*Email/Username or password is wrong";
+                return View(user);
+            }
         }
 
         [HttpGet]
@@ -66,27 +62,42 @@ namespace eCommerce_App.Controllers
         [HttpPost]
         public ActionResult Registered(Users user)
         {
-            if (c.Users.FirstOrDefault(x => x.email == user.email) == null)
+            if(c.Users.FirstOrDefault(x => x.userName == user.userName) == null)
             {
-                if (c.Users.FirstOrDefault(x => x.phoneNumber == user.phoneNumber) == null)
+                if (c.Users.FirstOrDefault(x => x.email == user.email) == null)
                 {
-                    user.passwordHash = SHA256Hashing(user.passwordHash);
-                    user.registeredAt = DateTime.Now;
-                    c.Users.Add(user);
-                    c.SaveChanges();
-                    return RedirectToAction("Login");
+                    if (c.Users.FirstOrDefault(x => x.phoneNumber == user.phoneNumber) == null)
+                    {
+                        user.passwordHash = SHA256Hashing(user.passwordHash);
+                        user.registeredAt = DateTime.Now;
+                        c.Users.Add(user);
+                        c.SaveChanges();
+                        return RedirectToAction("Login");
+                    }
+                    else
+                    {
+                        ViewBag.InvalidPhone = "*Phone number already exists";
+                        return View(user);
+                    }
                 }
                 else
                 {
-                    ViewBag.InvalidPhone = "*Phone number already exists";
+                    ViewBag.InvalidEmail = "*Email already exists";
                     return View(user);
                 }
             }
             else
             {
-                ViewBag.InvalidEmail = "*Email already exists";
+                ViewBag.InvalidUserName = "*Username already exists";
                 return View(user);
-            }    
+            }
+        }
+
+        [Authorize]
+        public ActionResult SignOut()
+        {
+            FormsAuthentication.SignOut();
+            return RedirectToAction("Index", "Home");
         }
 
         public ActionResult Checkout()

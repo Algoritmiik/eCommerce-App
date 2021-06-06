@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace eCommerce_App.Controllers
 {
+    [Authorize]
     public class CategoryController : Controller
     {
         // GET: Category
