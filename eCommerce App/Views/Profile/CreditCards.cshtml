@@ -1,77 +1,58 @@
-﻿@using eCommerce_App.Models.Database;
-@model List<CreditCards>
-@{ <!--EKLENECEKLER: Otomatik olarak giriş yapan kullanıcının id'sinin url'ine redirect edecek-->
+﻿@{ <!--EKLENECEKLER: Otomatik olarak giriş yapan kullanıcının id'sinin url'ine redirect edecek-->
     ViewBag.Title = "Profile";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
-    var creditCardName = "";
-    var holderName = "";
-    var expireDate = "";
-    var cardNumber = "";
-    var CVV = "";
-    var creditCardId = "";
-    var userId_userId = "";
+    string creditCardName = "";
+    string holderName = "";
+    string cardNumber = "";
+    int creditCardId = 0;
+    int userId_userId = 0;
+    int userId = 0;
+    string CVV = "";
+    string userName = "";
+    DateTime expireDate = new DateTime();
+    userName = User.Identity.Name;
+
 
     if (!IsPost)
     {
-        if (!Request.QueryString["userId"].IsEmpty() && Request.QueryString["userId"].IsInt()) //?userId=10
+        var db = Database.Open("Context"); <!--Nuget package olarak Microsoft.AspNet.WebPages.WebData eklenmeli-->
+        var dbCommand1 = "SELECT * FROM Users WHERE userName = @0";
+        var row1 = db.QuerySingle(dbCommand1, userName);
+
+        if (row1 != null)
         {
-            userId_userId = Request.QueryString["userId"];
-            var db = Database.Open("Context"); <!--Nuget package olarak Microsoft.AspNet.WebPages.WebData eklenmeli-->
-            var dbCommand = "SELECT * FROM CreditCards WHERE userId_userId = @0";
-            var row = db.QuerySingle(dbCommand, userId_userId);
-
-            if (row != null)
-            {
-                creditCardName = row.creditCardName;
-                holderName = row.holderName;
-                expireDate = row.expireDate;
-                cardNumber = row.cardNumber;
-                CVV = row.CVV;
-                creditCardId = row.creditCardId;
-                userId_userId = row.userId_userId;
-            }
+            userId = row1.userId;
         }
-    }
 
-    if (IsPost)
-    {
-        if (!Request.QueryString["userId"].IsEmpty() && Request.QueryString["userId"].IsInt())
+        var dbCommand2 = "SELECT * FROM CreditCards WHERE userId_userId = @0";
+        var row2 = db.QuerySingle(dbCommand2, userId);
+
+        if (row2 != null)
         {
-            creditCardName = Request.Form["creditCardName"];
-            holderName = Request.Form["creditCardName"];
-            expireDate = Request.Form["creditCardName"];
-            cardNumber = Request.Form["creditCardName"];
-            CVV = Request.Form["creditCardName"];
-            creditCardId = Request.Form["creditCardName"];
-            userId_userId = Request.Form["userId_userId"];
-
-
-            var db = Database.Open("Context");
-            var updateCommand = "INSERT INTO CreditCards (creditCardName, holderName, expireDate, cardNumber, CVV, creditCardId, userId_userId) VALUES (@0, @1, @2, @3, @4, @5, @6)";
-            db.Execute(updateCommand, creditCardName, holderName, expireDate, cardNumber, CVV, creditCardId, userId_userId);
-            Response.Redirect("/Profile/CreditCards");
+            creditCardName = row2.creditCardName;
+            holderName = row2.holderName;
+            cardNumber = row2.cardNumber;
+            creditCardId = row2.creditCardId;
+            userId_userId = row2.userId_userId;
+            expireDate = row2.expireDate;
+            CVV = row2.CVV;
         }
+        //else
+        //{
+        //    creditCardName = Request.Form["creditCardName"];
+        //    holderName = Request.Form["holderName"];
+        //    cardNumber = Request.Form["cardNumber"];
+        //    CVV = Request.Form["CVV"];
+        //    creditCardId = 0;
+        //    expireDate = DateTime.Parse("01/02/2025");
+        //    userId_userId = userId;
+        //}
     }
-}
-<style>
-    .button {
-        background-color: #4CAF50; /* Green */
-        border: none;
-        color: white;
-        padding: 15px 32px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 16px;
-        margin: 4px 2px;
-        cursor: pointer;
     }
-
-    .button1 {
-        border-radius: 12px;
-    }
-</style>
+<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Raleway:400,600">
+<link rel="stylesheet" type="text/css" href="~/Content/creditCard.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css">
 
 <!-- breadcrumbs -->
 <div class="breadcrumbs">
@@ -97,7 +78,7 @@
                         <li><a href="/Profile/UpdateInfo"><i class="fa fa-arrow-right" aria-hidden="true"></i>Updating Account Information</a></li>
                         <li><a href="/Profile/ResetPassword"><i class="fa fa-arrow-right" aria-hidden="true"></i>Reseting Password</a></li>
                     </ul>
-                    <li><a href="/Profile/Orders"><i class="fa fa-arrow-right" aria-hidden="true"></i>My Orders</a></li>
+                    @*<li><a href="/Profile/Orders"><i class="fa fa-arrow-right" aria-hidden="true"></i>My Orders</a></li>
                     <ul>
                         <li><a href="/Profile/CurrentOrders"><i class="fa fa-arrow-right" aria-hidden="true"></i>Current Orders</a> </li>
                         <li><a href="/Profile/PastOrders"><i class="fa fa-arrow-right" aria-hidden="true"></i>Past Orders</a> </li>
@@ -106,83 +87,90 @@
                     <ul>
                         <li><a href="/Profile/Ratings"><i class="fa fa-arrow-right" aria-hidden="true"></i>Ratings</a> </li>
                         <li><a href="/Profile/Comments"><i class="fa fa-arrow-right" aria-hidden="true"></i>Comments</a> </li>
-                    </ul>
+                    </ul>*@
                 </ul>
             </div>
         </div>
-        @*<div>
-                <table>
-                    <tbody>
-                        @foreach (var x in Model)
-                        {
-                            @if (userId_userId == x.userId.ToString())
-                            {
-                                <p></p>
-                            }
-                        }
-                    </tbody>
-                </table>
-            </div>*@
+
         <div class="col-md-8 top_brand_left">
             <div class="hover14 column">
                 <div class="agile_top_brand_left_grid">
                     <div class="agile_top_brand_left_grid1">
-                        <form method="post">
-                            <fieldset>
-                                <button id="btnShowModal" type="button" class="btn btn-warning btn-block btn-lg button button1">Add New Card</button>
-                                <div class="modal fade" tabindex="-1" id="loginModal" data-keyboard="false" data-backdrop="static">
-                                    <div class="modal-dialog modal-lg">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal">
-                                                    ×
-                                                </button>
-                                                <h4 class="modal-title">Add New Credit Card</h4>
+                        <h1>Credit card</h1>
+                        <h2>@creditCardName</h2>
+                        <div class="flip-container">
+                            <div class="flipper">
+                                <div class="front">
+                                    <div class="card">
+                                        <div class="card__sim"></div>
+                                        <div class="card__number">
+                                            @cardNumber
+                                        </div>
+                                        <div class="card__little-number">
+                                            number
+                                        </div>
+                                        <div class="card__little-letter">
+                                            Good Till
+                                        </div>
+                                        <div class="card__expiration">
+                                            <div class="card__month">
+                                                @expireDate.Month
                                             </div>
-                                            <div class="modal-body">
-                                                <form method="post">
-                                                    <div class="form-group">
-                                                        <input class="form-control" type="text" placeholder="Card Name" id="cardName" value="@creditCardName" />
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <input class="form-control" type="text" placeholder="Card Holders Name" id="cardHolder" value="@holderName" />
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <input class="form-control" type="number" placeholder="Credit Card Number" id="cardNumber" value="@cardNumber" />
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <input class="form-control" type="datetime" placeholder="Expire Date" id="expireDate" value="@expireDate" />
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <input class="form-control" type="number" placeholder="CVV" id="CVV" value="@CVV" />
-                                                        <input type="hidden" name="userId" value="@userId_userId" />
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="submit" class="btn btn-warning btn-block btn-lg button1" ">Add</button>
-                                                        <button type="button" id="btnHideModal" class="btn btn-warning btn-block btn-lg button1">Hide</button>
-                                                    </div>
-                                                </form>
+                                            <span>/</span>
+                                            <div class="card__year">
+                                                @expireDate.Year
                                             </div>
+                                        </div>
+                                        <div class="card__name">
+                                            @holderName
+                                        </div>
+                                        <div class="card__type">
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                        <form method="post">
+                            <fieldset>
+                                <div class="row mt-2">
+                                    <div class="col-md-6"><label class="labels">Credit Card Name</label><input name="creditCardName" type="text" class="form-control" placeholder="Credit Card Name" value="@creditCardName"></div>
+                                    <div class="col-md-6"><label class="labels">Card Holder Name</label><input name="holderName" type="text" class="form-control" placeholder="Card Holder Name" value="@holderName"></div>
+                                </div>
+                                <br>
+                                <div class="row mt-3">
+                                    <div class="col-md-12"><label class="labels">Card Number</label><input name="cardNumber" type="tel" class="form-control" placeholder="Card Number" value="@cardNumber"></div>
+                                </div>
+                                <br>
+                                <div class="row mt-3">
+                                    <div class="col-md-12"><label class="labels">Expire Month</label><input name="expireDate" type="datetime" class="form-control" value="@expireDate"></div>
+                                </div>
+                                <br>
+                                <div class="row mt-3">
+                                    <div class="col-md-12"><label class="labels">CVV</label><input name="CVV" type="text" class="form-control" placeholder="CVV" value="@CVV"></div>
+                                </div>
+                                <div class="row mt-3">
+                                    <input type="hidden" name="creditCardId" value="@creditCardId">
+                                    <input type="hidden" name="userId" value="@userId_userId">
+                                </div>
+                                <br>
+                                <p><input type="submit" name="buttonSubmit" value="Submit Changes" /></p>
                             </fieldset>
+                            <br>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
+
+
+        @*<div class="col-md-8 top_brand_left">
+            <div class="hover14 column">
+                <div class="agile_top_brand_left_grid">
+                    <div class="agile_top_brand_left_grid1">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>*@
     </div>
 </div>
-<script type="text/javascript">
-
-    $(document).ready(function () {
-        $("#btnShowModal").click(function () {
-            $("#loginModal").modal('show');
-        });
-
-        $("#btnHideModal").click(function () {
-            $("#loginModal").modal('hide');
-        });
-    });
-</script>

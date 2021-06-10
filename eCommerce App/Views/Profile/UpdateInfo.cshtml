@@ -1,4 +1,6 @@
-﻿@{ <!--EKLENECEKLER: Otomatik olarak giriş yapan kullanıcının id'sinin url'ine redirect edecek-->
+﻿@*@using eCommerce_App.Models.Database;
+@model List<Users>*@
+@{
     ViewBag.Title = "Profile";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
@@ -6,42 +8,21 @@
     var lastName = "";
     var email = "";
     var phoneNumber = "";
-    var userId = "";
+    var userName = "";
 
     if (!IsPost)
     {
-        if (!Request.QueryString["userId"].IsEmpty() && Request.QueryString["userId"].IsInt()) //?userId=10
+        userName = User.Identity.Name;
+        var db = Database.Open("Context"); <!--Nuget package olarak Microsoft.AspNet.WebPages.WebData eklenmeli-->
+        var dbCommand = "SELECT * FROM Users WHERE userName = @0";
+        var row = db.QuerySingle(dbCommand, userName);
+
+        if (row != null)
         {
-            userId = Request.QueryString["userId"];
-            var db = Database.Open("Context"); <!--Nuget package olarak Microsoft.AspNet.WebPages.WebData eklenmeli-->
-            var dbCommand = "SELECT * FROM Users WHERE userId = @0";
-            var row = db.QuerySingle(dbCommand, userId);
-
-            if (row != null)
-            {
-                firstName = row.firstName;
-                lastName = row.lastName;
-                email = row.email;
-                phoneNumber = row.phoneNumber;
-            }
-        }
-    }
-
-    if (IsPost)
-    {
-        if (!Request.QueryString["userId"].IsEmpty() && Request.QueryString["userId"].IsInt())
-        {
-            firstName = Request.Form["firstName"];
-            lastName = Request.Form["lastName"];
-            email = Request.Form["email"];
-            phoneNumber = Request.Form["phoneNumber"];
-            userId = Request.Form["userId"];
-
-
-            var db = Database.Open("Context");
-            var updateCommand = "UPDATE Users SET firstName = @0, lastName = @1, email = @2, phoneNumber = @3 WHERE userId = @4";
-            db.Execute(updateCommand, firstName, lastName, email, phoneNumber, userId);
-            Response.Redirect("/Profile/Profile");
+            firstName = row.firstName;
+            lastName = row.lastName;
+            email = row.email;
+            phoneNumber = row.phoneNumber;
         }
     }
 }
@@ -70,7 +51,7 @@
                         <li><a href="/Profile/UpdateInfo"><i class="fa fa-arrow-right" aria-hidden="true"></i>Updating Account Information</a></li>
                         <li><a href="/Profile/ResetPassword"><i class="fa fa-arrow-right" aria-hidden="true"></i>Reseting Password</a></li>
                     </ul>
-                    <li><a href="/Profile/Orders"><i class="fa fa-arrow-right" aria-hidden="true"></i>My Orders</a></li>
+                    @*<li><a href="/Profile/Orders"><i class="fa fa-arrow-right" aria-hidden="true"></i>My Orders</a></li>
                     <ul>
                         <li><a href="/Profile/CurrentOrders"><i class="fa fa-arrow-right" aria-hidden="true"></i>Current Orders</a> </li>
                         <li><a href="/Profile/PastOrders"><i class="fa fa-arrow-right" aria-hidden="true"></i>Past Orders</a> </li>
@@ -79,7 +60,7 @@
                     <ul>
                         <li><a href="/Profile/Ratings"><i class="fa fa-arrow-right" aria-hidden="true"></i>Ratings</a> </li>
                         <li><a href="/Profile/Comments"><i class="fa fa-arrow-right" aria-hidden="true"></i>Comments</a> </li>
-                    </ul>
+                    </ul>*@
                 </ul>
             </div>
         </div>
@@ -92,8 +73,8 @@
                             <fieldset>
                                 <h2 style="padding-left:30%">Update Information</h2><br>
                                 <div class="row mt-2">
-                                    <div class="col-md-6"><label class="labels">First Name</label><input name="firstName" type="text" class="form-control" value="@firstName" placeholder="First Name" ></div>
-                                    <div class="col-md-6"><label class="labels">Last Name</label><input name="lastName" type="text" class="form-control" value="@lastName" placeholder="Last Name"></div>
+                                    <div class="col-md-6"><label class="labels">First Name</label><input name="firstName" type="text" class="form-control" placeholder="First Name" value="@firstName"></div>
+                                    <div class="col-md-6"><label class="labels">Last Name</label><input name="lastName" type="text" class="form-control" placeholder="Last Name" value="@lastName"></div>
                                 </div>
                                 <br>
                                 <div class="row mt-3">
@@ -102,7 +83,9 @@
                                 <br>
                                 <div class="row mt-3">
                                     <div class="col-md-12"><label class="labels">Email Address</label><input name="email" type="email" class="form-control" placeholder="Email Address" value="@email"></div>
-                                    <input type="hidden" name="userId" value="@userId" />
+                                </div>
+                                <div class="row mt-3">
+                                    <input type="hidden" name="userName" value="@User.Identity.Name">
                                 </div>
                                 <br>
                                 <p><input type="submit" name="buttonSubmit" value="Submit Changes" /></p>
