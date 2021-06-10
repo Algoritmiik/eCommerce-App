@@ -34,6 +34,8 @@ namespace eCommerce_App.Models.Database
         [Required]
         public string passwordHash { get; set; }
         [Required]
+        public bool isAdmin { get; set; }
+        [Required]
         public DateTime registeredAt { get; set; }
         public DateTime? modified { get; set; }
         public DateTime? lastLogin { get; set; }

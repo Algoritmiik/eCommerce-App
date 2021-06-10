@@ -31,6 +31,7 @@ namespace eCommerce_App.Controllers
             {
                 var currentUser = c.Users.Where(x => x.email == user.email).First();
                 currentUser.lastLogin = DateTime.Now;
+                currentUser.isAdmin = false;
                 string userName = currentUser.userName;
                 c.Entry(currentUser).CurrentValues.SetValues(currentUser);
                 c.SaveChanges();
