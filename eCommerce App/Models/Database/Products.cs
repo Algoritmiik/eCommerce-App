@@ -20,7 +20,7 @@ namespace eCommerce_App.Models.Database
         [StringLength(100)]
         public string descriptions { get; set; }
         [Required]
-        public int price { get; set; }
+        public float price { get; set; }
         public ICollection<ProductDetails> productDetails { get; set; }
         public ICollection<Tags> tags { get; set; }
         public ICollection<Comments> comments { get; set; }
